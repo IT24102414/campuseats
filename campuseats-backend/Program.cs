@@ -110,4 +110,7 @@ app.UseAuthorization();    // may you?      (checks roles)
 
 app.MapControllers();
 
+// Automatically redirect root URL to Swagger UI
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.Run();
