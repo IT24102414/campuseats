@@ -1,0 +1,21 @@
+# Build and binary outputs
+bin/
+obj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio / Rider
+.vs/
+.idea/
+.vscode/
+
+# Environment / local configs with secrets
+appsettings.Development.json
+*.local.json
+.env
+.env.*

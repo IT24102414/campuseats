@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+dist-ssr/
+bin/
+obj/
+
+# Archives
+*.zip
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.vs/
