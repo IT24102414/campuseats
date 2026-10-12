@@ -1,17 +1,30 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function DishCard({ dish }) {
+  const navigate = useNavigate()
+
+  const handleOrder = () => {
+    navigate(`/order?dish=${encodeURIComponent(dish.name)}`, {
+      state: { selectedDish: dish.name }
+    })
+  }
+
   return (
-    <article className="dish-card">
-      <h3>{dish.name}</h3>
-      <p>Rs. {dish.price.toFixed(2)}</p>
-      <p>
-        {dish.category} { !dish.available && <span className="sold-out">— Sold out</span> }
-      </p>
-      <Link to={`/dish/${dish.id}`} className="detail-link">
-        View details
-      </Link>
-    </article>
+    <div className="dish-card">
+      <div className="dish-category">{dish.category || 'Mains'}</div>
+      <div className="dish-name">{dish.name}</div>
+      <span className={`badge-status ${dish.available ? 'badge-avail' : 'badge-unavail'}`}>
+        ● {dish.available ? 'Available' : 'Sold Out'}
+      </span>
+      <div className="dish-price">Rs. {Number(dish.price).toFixed(2)}</div>
+      <button
+        className={`btn-order ${!dish.available ? 'disabled' : ''}`}
+        disabled={!dish.available}
+        onClick={handleOrder}
+      >
+        {dish.available ? 'Add to Order' : 'Sold Out'}
+      </button>
+    </div>
   )
 }
 

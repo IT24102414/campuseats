@@ -5,37 +5,44 @@ import MenuList from '../components/MenuList'
 
 function MenuPage() {
   const [query, setQuery] = useState('')
-  const debounced = useDebounce(query, 400)
-  
+  const debounced = useDebounce(query, 300)
+
   // Read API base URL from environment variable per Lab 11 Task 01
   const API = import.meta.env.VITE_API_URL
   const menuUrl = (API && !API.includes('onrender.com')) ? `${API}/api/menu` : '/api/menu'
   const { data: dishes, isLoading, error } = useFetch(menuUrl)
 
-  if (isLoading) return <p>Loading menu…</p>
-  if (error) return <p>Could not load menu: {error}</p>
-
   const filtered = (dishes || []).filter((d) =>
-    d.name.toLowerCase().includes(debounced.toLowerCase()),
+    d.name.toLowerCase().includes(debounced.toLowerCase()) ||
+    (d.category && d.category.toLowerCase().includes(debounced.toLowerCase()))
   )
 
   return (
     <main className="menu-page">
-      <header>
-        <h1>CampusEats Dashboard</h1>
-        <p>Choose a dish from the menu below.</p>
-      </header>
-
-      <div className="search-box">
+      <div className="search-bar">
         <input
+          className="search-input"
+          type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search dishes..."
+          placeholder="Search dishes (e.g., Kottu, Rice, Dessert)..."
           aria-label="Search dishes"
         />
       </div>
 
-      <MenuList dishes={filtered} />
+      {isLoading && (
+        <div style={{ textAlign: 'center', padding: '40px', color: '#e65100', fontWeight: '600' }}>
+          Loading menu dishes from API...
+        </div>
+      )}
+
+      {error && !dishes && (
+        <div style={{ textAlign: 'center', padding: '40px', color: '#d32f2f' }}>
+          Could not load menu: {error}
+        </div>
+      )}
+
+      {!isLoading && <MenuList dishes={filtered} />}
     </main>
   )
 }
