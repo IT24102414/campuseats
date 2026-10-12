@@ -9,7 +9,7 @@ function MenuPage() {
   
   // Read API base URL from environment variable per Lab 11 Task 01
   const API = import.meta.env.VITE_API_URL
-  const menuUrl = API ? `${API}/api/menu` : '/menu.json'
+  const menuUrl = (API && !API.includes('onrender.com')) ? `${API}/api/menu` : '/api/menu'
   const { data: dishes, isLoading, error } = useFetch(menuUrl)
 
   if (isLoading) return <p>Loading menu…</p>
